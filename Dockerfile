@@ -1,6 +1,6 @@
 # Imagem base do NVIDIA CUDA (baseada em Ubuntu) para garantir suporte a GPU
-#FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
-FROM ubuntu:24.04
+FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
+#FROM ubuntu:24.04
 
 USER root
 

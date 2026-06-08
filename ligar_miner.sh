@@ -74,6 +74,21 @@ docker_run_srbminer_3_3_5() {
 	    --log-file /miners/srbminer.log
 }
 
+docker_run_alpha_miner_1_7_6() {
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  pearl-multiminerador:latest \
+	  unbuffer ./alpha-miner-1.7.6-beta \
+	    --pool stratum+tcp://us2.alphapool.tech:5566 \
+	    --failover-pools stratum+tcp://us1.alphapool.tech:5566 \
+	    --address prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	    --worker multi-zd01
+}
+
 docker_run_alpha_miner_1_7_7() {
 	docker run -d \
 	  --name pearl-miner \
@@ -91,8 +106,9 @@ docker_run_alpha_miner_1_7_7() {
 }
 
 #docker_run_srbminer_3_3_3
-docker_run_srbminer_3_3_5
-#docker_run_alpha_miner_1_7_7
+#docker_run_srbminer_3_3_5
+#docker_run_alpha_miner_1_7_6
+docker_run_alpha_miner_1_7_7
 
 # Executa o seu comando exato em segundo plano (-d) com o nome unificado
 #docker pull alphaminetech/pearl-miner:latest
