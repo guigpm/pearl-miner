@@ -49,33 +49,6 @@ RUN download_srbminer() { \
   && download_srbminer "3.3.4" \
   && download_srbminer "3.3.5"
 
-
-#RUN download_srbminer() { \
-#    set -e; \
-#    local VERSION_TAG="$1"; \
-#    local VERSION_STRING=$(echo "$VERSION_TAG" | tr '.' '-'); \
-#    local FILE_NAME="SRBMiner-Multi-${VERSION_STRING}-Linux.tar.gz"; \
-#    local URL="https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/${FILE_NAME}"; \
-#    if ! curl -L "${URL}" -o "${FILE_NAME}"; then \
-#        wget --progress=dot:giga --no-check-certificate "$URL" -O "${FILE_NAME}"; \
-#    fi; \
-#    tar xf "${FILE_NAME}"; \
-#    rm -rf "${FILE_NAME}"; \
-#    chown -R miners:miners ./SRBMiner-Multi-${VERSION_STRING}; \
-#    chmod +x ./SRBMiner-Multi-${VERSION_STRING}/SRBMiner-MULTI; \
-#  } \
-#  && download_srbminer "3.3.3" \
-#  && download_srbminer "3.3.4"
-
-
-#RUN wget -qO- https://github.com/doktor83/SRBMiner-Multi/releases/download/3.3.3/SRBMiner-Multi-3-3-3-Linux.tar.gz | tar -xzvf - -C /miners && \
-#  chown -R miners:miners ./SRBMiner-Multi-3-3-3 && \
-#  chmod +x ./SRBMiner-Multi-3-3-3/SRBMiner-MULTI
-
-#RUN wget -qO- https://github.com/doktor83/SRBMiner-Multi/releases/download/3.3.4/SRBMiner-Multi-3-3-4-Linux.tar.gz | tar -xzvf - -C /miners && \
-#  chown -R miners:miners ./SRBMiner-Multi-3-3-4 && \
-#  chmod +x ./SRBMiner-Multi-3-3-4/SRBMiner-MULTI
-
 # --------------------------------------------------------
 # 2. INSTALAÇÃO DO ALPHA-MINER (Pearl Network)
 # --------------------------------------------------------
