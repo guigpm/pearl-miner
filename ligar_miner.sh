@@ -86,7 +86,8 @@ docker_run_alpha_miner_1_7_6() {
 	    --pool stratum+tcp://us2.alphapool.tech:5566 \
 	    --failover-pools stratum+tcp://us1.alphapool.tech:5566 \
 	    --address prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
-	    --worker multi-zd01
+	    --worker multi-zd01 \
+	    --password "x;d=524288"
 }
 
 docker_run_alpha_miner_1_7_7() {
