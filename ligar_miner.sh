@@ -83,8 +83,8 @@ docker_run_alpha_miner_1_7_6() {
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
 	  pearl-multiminerador:latest \
 	  unbuffer ./alpha-miner-1.7.6-beta \
-	    --pool stratum+tcp://us2.alphapool.tech:5566 \
-	    --failover-pools stratum+tcp://us1.alphapool.tech:5566 \
+	    --pool stratum+tcp://us1.alphapool.tech:5566 \
+	    --failover-pools stratum+tcp://us2.alphapool.tech:5566 \
 	    --address prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
 	    --worker multi-zd01 \
 	    --password "x;d=524288"
@@ -97,6 +97,11 @@ docker_run_alpha_miner_1_7_7() {
 	  --ipc=host \
 	  --gpus all \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  -e PEARL_ADDRESS=prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	  -e PEARL_POOL_HOST=us1.alphapool.tech,us2.alphapool.tech,eu1.alphapool.tech,sg1.alphapool.tech \
+	  -e PEARL_POOL_PORT=5566 \
+	  -e PEARL_DIFFICULTY=524288 \
+	  -e PEARL_WORKER=mattioli-zd01 \
 	  pearl-multiminerador:latest \
 	  unbuffer ./alpha-miner-1.7.7 \
 	    --pool stratum+tcp://us2.alphapool.tech:5566 \
@@ -106,43 +111,42 @@ docker_run_alpha_miner_1_7_7() {
 	    --password "x;d=524288"
 }
 
+docker_run_alpha_miner_1_7_7_direct() {
+	docker pull alphaminetech/pearl-miner:1.7.7
+
+	docker run --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  -e PEARL_ADDRESS=prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	  -e PEARL_POOL_HOST=us1.alphapool.tech,us2.alphapool.tech,eu1.alphapool.tech,sg1.alphapool.tech \
+	  -e PEARL_POOL_PORT=5566 \
+	  -e PEARL_DIFFICULTY=524288 \
+	  -e PEARL_WORKER=mattioli-zd01 \
+	  alphaminetech/pearl-miner:1.7.7
+}
+
+docker_run_alpha_miner_latest() {
+	docker pull alphaminetech/pearl-miner:latest
+
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  -e PEARL_ADDRESS='prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4' \
+	  -e PEARL_WORKER=mattioli-zd01 \
+	  -e PEARL_POOL_HOST=us1.alphapool.tech,us2.alphapool.tech,eu1.alphapool.tech,sg1.alphapool.tech \
+	  -e PEARL_POOL_PORT=5566 \
+	  -e PEARL_DIFFICULTY=524288 \
+	  alphaminetech/pearl-miner:latest
+}
+
 #docker_run_srbminer_3_3_3
-#docker_run_srbminer_3_3_5
+docker_run_srbminer_3_3_5
 #docker_run_alpha_miner_1_7_6
-docker_run_alpha_miner_1_7_7
-
-# Executa o seu comando exato em segundo plano (-d) com o nome unificado
-#docker pull alphaminetech/pearl-miner:latest
-#  
-#docker run -d \
-#  --name pearl-miner \
-#  --restart unless-stopped \
-#  --ipc=host \
-#  --gpus all \
-#  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
-#  -e PEARL_ADDRESS='prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4' \
-#  -e PEARL_WORKER=mattioli-zd01 \
-#  -e PEARL_POOL_HOST=us2.alphapool.tech \
-#  -e PEARL_POOL_PORT=5566 \
-#  -e PEARL_DIFFICULTY=524288 \
-#  alphaminetech/pearl-miner:latest
-  
-#echo "=== 2. Iniciando Pearl Miner Local ==="
-# 1) Download the miner — source: https://github.com/AlphaMine-Tech/alpha-miner
-# Linux x86_64, supports Volta/Ampere/Ada/Hopper/Blackwell auto-detect
-# 1. download
-#curl -L -o alpha-miner https://github.com/AlphaMine-Tech/alpha-miner/releases/latest/download/alpha-miner
-#chmod +x alpha-miner
-
-# 2) verify checksum
-#curl -L https://github.com/AlphaMine-Tech/alpha-miner/releases/latest/download/SHA256SUMS \
-#  | sha256sum -c
-
-# 3) Replace YOUR_PRL_ADDRESS with your prl1p... wallet address, then run
-#./alpha-miner \
-#  --pool stratum+tcp://us2.alphapool.tech:5566 \
-#  --address 'prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4' \
-#  --worker zd01
+#docker_run_alpha_miner_1_7_7
+#docker_run_alpha_miner_1_7_7_direct
+#docker_run_alpha_miner_latest
 
 echo "=== Concluído! O minerador está rodando em segundo plano. ==="
 
