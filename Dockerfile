@@ -62,6 +62,10 @@ RUN curl -L -o alpha-miner-1.7.6-beta https://github.com/AlphaMine-Tech/alpha-mi
   echo "c84396e2ff4ded14a8c83cd253761b46dd40927c5c43a39a20aac9ff8bdfbfe5  alpha-miner-1.7.6-beta" | sha256sum -c && \
   chown -R miners:miners ./alpha-miner-1.7.6-beta && \
   chmod +x alpha-miner-1.7.6-beta
+  
+RUN curl -L -o alpha-miner-latest https://pearl.alphapool.tech/downloads/alpha-miner && \
+  chown -R miners:miners ./alpha-miner-latest && \
+  chmod +x alpha-miner-latest
 
 # --------------------------------------------------------
 # CONFIGURAÇÃO DE INICIALIZAÇÃO FLEXÍVEL

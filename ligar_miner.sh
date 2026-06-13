@@ -132,6 +132,27 @@ docker_run_alpha_miner_1_7_7() {
 	    --password "x;d=524288"
 }
 
+docker_run_alpha_miner_latest_in() {
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  -e PEARL_ADDRESS=prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	  -e PEARL_POOL_HOST=us1.alphapool.tech,us2.alphapool.tech,eu1.alphapool.tech,ru1.alphapool.tech,eu2.alphapool.tech,sg1.alphapool.tech,in1.alphapool.tech \
+	  -e PEARL_POOL_PORT=5566 \
+	  -e PEARL_DIFFICULTY=524288 \
+	  -e PEARL_WORKER=mattioli-zd01 \
+	  pearl-multiminerador:latest \
+	  unbuffer ./alpha-miner-latest \
+	    --pool stratum+tcp://us1.alphapool.tech:5566 \
+	    --failover-pools stratum+tcp://us2.alphapool.tech:5566 \
+	    --address prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	    --worker multi-zd01 \
+	    --password "x;d=524288"
+}
+
 docker_run_alpha_miner_1_7_7_direct() {
 	docker pull alphaminetech/pearl-miner:1.7.7
 
@@ -165,7 +186,8 @@ docker_run_alpha_miner_latest() {
 #docker_run_srbminer_3_3_3
 #docker_run_srbminer_3_3_5
 #docker_run_alpha_miner_1_7_6
-docker_run_alpha_miner_1_7_7
+#docker_run_alpha_miner_1_7_7
+docker_run_alpha_miner_latest_in
 #docker_run_alpha_miner_1_7_7_direct
 #docker_run_alpha_miner_latest
 
