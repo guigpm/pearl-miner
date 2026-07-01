@@ -52,7 +52,10 @@ RUN download_srbminer() { \
   && download_srbminer "3.3.6" \
   && download_srbminer "3.3.7" \
   && download_srbminer "3.3.8" \
-  && download_srbminer "3.3.9"
+  && download_srbminer "3.3.9" \
+  && download_srbminer "3.4.0" \
+  && download_srbminer "3.4.1" \
+  && download_srbminer "3.4.2"
 
 # --------------------------------------------------------
 # 2. INSTALAÇÃO DO ALPHA-MINER (Pearl Network)

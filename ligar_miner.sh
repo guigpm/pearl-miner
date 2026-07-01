@@ -92,6 +92,41 @@ docker_run_srbminer_3_3_9() {
 	    --log-file /miners/srbminer.log
 }
 
+docker_run_srbminer_3_4_2() {
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  pearl-multiminerador:latest \
+	  unbuffer ./srbminer_3.4.2/srbminer_custom_bin \
+	    --algorithm-gpu pearlhash \
+	    --pool br.pearl.herominers.com:1200 \
+	    --wallet prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	    --worker multi-zd01 \
+	    --api-enable --api-port 80 \
+	    --log-file /miners/srbminer.log
+}
+
+docker_run_srbminer_3_4_2_alphapool() {
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  pearl-multiminerador:latest \
+	  unbuffer ./srbminer_3.4.2/srbminer_custom_bin \
+	    --algorithm-gpu pearlhash \
+	    --pool stratum+tcp://us.alphapool.tech:5566 \
+	    --wallet prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	    --worker multi-zd01 \
+	    --api-enable --api-port 80 \
+	    --password x \
+	    --log-file /miners/srbminer.log
+}
+
 #PING us1.alphapool.tech (15.204.220.54) 56(84) bytes of data.
 #64 bytes from ns1020976.ip-15-204-220.us (15.204.220.54): icmp_seq=1 ttl=42 time=172 ms
 #
@@ -204,9 +239,11 @@ docker_run_alpha_miner_latest() {
 #docker_run_srbminer_3_3_3
 #docker_run_srbminer_3_3_5
 #docker_run_srbminer_3_3_9
+docker_run_srbminer_3_4_2
+#docker_run_srbminer_3_4_2_alphapool # Does it work?
 #docker_run_alpha_miner_1_7_6
 #docker_run_alpha_miner_1_7_7
-docker_run_alpha_miner_latest_in
+#docker_run_alpha_miner_latest_in
 #docker_run_alpha_miner_1_7_7_direct
 #docker_run_alpha_miner_latest
 
