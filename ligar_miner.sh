@@ -13,7 +13,8 @@ sudo nvidia-smi -pm 1
 sudo nvidia-smi -pl 530
 
 # Trava a frequência do núcleo em 2610 MHz
-sudo nvidia-smi --lock-gpu-clocks=2610
+#sudo nvidia-smi --lock-gpu-clocks=2610
+sudo nvidia-smi --lock-gpu-clocks=2505
 
 # Trava a frequência do núcleo em 2800 MHz
 #sudo nvidia-smi --lock-gpu-clocks=2800
@@ -66,6 +67,23 @@ docker_run_srbminer_3_3_5() {
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
 	  pearl-multiminerador:latest \
 	  unbuffer ./srbminer_3.3.5/srbminer_custom_bin \
+	    --algorithm-gpu pearlhash \
+	    --pool br.pearl.herominers.com:1200 \
+	    --wallet prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	    --worker multi-zd01 \
+	    --api-enable --api-port 80 \
+	    --log-file /miners/srbminer.log
+}
+
+docker_run_srbminer_3_3_9() {
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  pearl-multiminerador:latest \
+	  unbuffer ./srbminer_3.3.9/srbminer_custom_bin \
 	    --algorithm-gpu pearlhash \
 	    --pool br.pearl.herominers.com:1200 \
 	    --wallet prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
@@ -185,6 +203,7 @@ docker_run_alpha_miner_latest() {
 
 #docker_run_srbminer_3_3_3
 #docker_run_srbminer_3_3_5
+#docker_run_srbminer_3_3_9
 #docker_run_alpha_miner_1_7_6
 #docker_run_alpha_miner_1_7_7
 docker_run_alpha_miner_latest_in
