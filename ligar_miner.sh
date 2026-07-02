@@ -103,7 +103,7 @@ docker_run_srbminer_3_4_2() {
 	  unbuffer ./srbminer_3.4.2/srbminer_custom_bin \
 	    --algorithm-gpu pearlhash \
 	    --pool br.pearl.herominers.com:1200 \
-	    --wallet prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
+	    --wallet prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4+mdl1pprpse62zvnexs6ra6tsuhu5qg2sp8k9qqsun8nlpfqw0uw6e3nkqk997vp \
 	    --worker multi-zd01 \
 	    --api-enable --api-port 80 \
 	    --log-file /miners/srbminer.log
