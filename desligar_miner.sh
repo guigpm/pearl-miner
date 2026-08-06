@@ -15,5 +15,11 @@ sudo nvidia-smi --reset-memory-clocks
 DEFAULT_PL=$(nvidia-smi -q -d POWER | grep "Default Power Limit" | grep -oE '[0-9]+' | head -n 1)
 sudo nvidia-smi -pl $DEFAULT_PL
 
-echo "=== Tudo pronto! GPU liberada para uso comum/jogos ==="
+echo "=== 3. Liberado espaço em disco do Docker ==="
 
+yes | docker system prune
+yes | docker image prune
+yes | docker volume prune
+yes | docker system prune -af --volumes
+
+echo "=== Tudo pronto! GPU liberada para uso comum/jogos e liberado espaço em disco do Docker ==="
