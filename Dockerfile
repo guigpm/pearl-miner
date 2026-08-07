@@ -114,13 +114,30 @@ RUN download_cryptix_miner() { \
   && download_cryptix_miner "0.2.9" \
   && download_cryptix_miner "0.2.10" "ubuntu64"
 
+# --------------------------------------------------------
+# 3. INSTALAÇÃO DO FL4SHMINER (Cryptix Network)
+# --------------------------------------------------------
+
+RUN download_fl4shminer() { \
+    set -e; \
+    local VERSION_TAG="$1"; \
+    echo ">> Download Fl4shMiner ${VERSION_TAG} and extract files:"; \
+    wget -qO- "https://github.com/Fl4sh9174/Fl4shMiner/releases/download/${VERSION_TAG}/fl4shminer-${VERSION_TAG}.tar.gz" | tar -xzvf - -C /miners; \
+    chown -R miners:miners ./fl4shminer; \
+    chmod +x ./fl4shminer/fl4shminer; \
+    mv ./fl4shminer "./fl4shminer_${VERSION_TAG}"; \
+  } \
+  && download_fl4shminer "v1.2.0" \
+  && download_fl4shminer "v1.2.3" \
+  && download_fl4shminer "v1.2.4"
+
 
 # --------------------------------------------------------
 # CONFIGURAÇÃO DE INICIALIZAÇÃO FLEXÍVEL
 # --------------------------------------------------------
 # Sem ENTRYPOINT engessado. O padrão inicializa o Bash.
 
-RUN ls -lahR /miners
+#RUN ls -lahR /miners
 
 EXPOSE 80
 

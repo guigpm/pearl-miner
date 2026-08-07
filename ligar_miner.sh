@@ -290,6 +290,27 @@ docker_run_cryptix_miner() {
 	    #cryptix:qqzfpzzzv66vjfyru6r9nfz9lxxkht72t4wdvu4tsfs96r89rumvqf6j3eaae SafeTrade
 }
 
+
+docker_run_fl4shminer() {
+    set -e;
+    local VERSION_TAG="$1";
+
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  pearl-multiminerador:latest \
+	  unbuffer ./fl4shminer_${VERSION_TAG}/fl4shminer \
+	    --algo cryptix-ox8 \
+	    --pool "stratum+tcp://stratum.cryptix-network.org:13094" \
+	    --wallet "cryptix:qzfsfy9glm4prqlqxas7t7t3ypgat47zkgmedxwltr9xwyhpvp2kgdh8nslge"
+
+	    #cryptix:qzfsfy9glm4prqlqxas7t7t3ypgat47zkgmedxwltr9xwyhpvp2kgdh8nslge CPAY
+	    #cryptix:qqzfpzzzv66vjfyru6r9nfz9lxxkht72t4wdvu4tsfs96r89rumvqf6j3eaae SafeTrade
+}
+
 #docker_run_srbminer_3_3_3
 #docker_run_srbminer_3_3_5
 #docker_run_srbminer_3_3_9
@@ -297,7 +318,8 @@ docker_run_cryptix_miner() {
 #docker_run_srbminer_3_4_2_alphapool # Does it work?
 #docker_run_cryptix_miner_0_2_9
 #docker_run_cryptix_miner_0_2_10
-docker_run_cryptix_miner "0.2.10"
+#docker_run_cryptix_miner "0.2.10"
+docker_run_fl4shminer "v1.2.4"
 #docker_run_alpha_miner_1_7_6
 #docker_run_alpha_miner_1_7_7
 #docker_run_alpha_miner_latest_in
