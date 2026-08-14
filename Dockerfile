@@ -38,27 +38,43 @@ WORKDIR /miners
 # --------------------------------------------------------
 # 1. INSTALAÇÃO DO SRBMINER-MULTI
 # --------------------------------------------------------
-RUN download_srbminer() { \
+#  https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/SRBMiner-Multi-${VERSION_DASH}-Linux.tar.gz
+#  https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/srbminer_custom-${VERSION_TAG}.tar.gz
+RUN download_srbminer_custom() { \
     set -e; \
     local VERSION_TAG="$1"; \
+    local VERSION_DASH="$(echo "${VERSION_TAG}" | sed 's/\./-/g')"; \
     echo ">> Download SRBMiner-Multi ${VERSION_TAG} and extract files:"; \
     wget -qO- "https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/srbminer_custom-${VERSION_TAG}.tar.gz" | tar -xzvf - -C /miners; \
     chown -R miners:miners ./srbminer_custom; \
     chmod +x ./srbminer_custom/srbminer_custom_bin; \
-    mv ./srbminer_custom "./srbminer_${VERSION_TAG}"; \
+    mv ./srbminer_custom "./srbminer_${VERSION_TAG}_custom"; \
   } \
-  && download_srbminer "3.3.3" \
-  && download_srbminer "3.3.4" \
-  && download_srbminer "3.3.5" \
-  && download_srbminer "3.3.6" \
-  && download_srbminer "3.3.7" \
-  && download_srbminer "3.3.8" \
-  && download_srbminer "3.3.9" \
-  && download_srbminer "3.4.0" \
-  && download_srbminer "3.4.1" \
-  && download_srbminer "3.4.2" \
-  && download_srbminer "3.4.7" \
-  && download_srbminer "3.4.9" \
+  && download_srbminer_custom "3.3.3" \
+  && download_srbminer_custom "3.3.4" \
+  && download_srbminer_custom "3.3.5" \
+  && download_srbminer_custom "3.3.6" \
+  && download_srbminer_custom "3.3.7" \
+  && download_srbminer_custom "3.3.8" \
+  && download_srbminer_custom "3.3.9" \
+  && download_srbminer_custom "3.4.0" \
+  && download_srbminer_custom "3.4.1" \
+  && download_srbminer_custom "3.4.2" \
+  && download_srbminer_custom "3.4.7" \
+  && download_srbminer_custom "3.4.9" \
+  && download_srbminer_custom "3.5.0" \
+  && download_srbminer_custom "3.5.4"
+
+  RUN download_srbminer() { \
+    set -e; \
+    local VERSION_TAG="$1"; \
+    local VERSION_DASH="$(echo "${VERSION_TAG}" | sed 's/\./-/g')"; \
+    echo ">> Download SRBMiner-Multi ${VERSION_TAG} and extract files:"; \
+    wget -qO- "https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/SRBMiner-Multi-${VERSION_DASH}-Linux.tar.gz" | tar -xzvf - -C /miners; \
+    chown -R miners:miners "./SRBMiner-Multi-${VERSION_DASH}"; \
+    chmod +x "./SRBMiner-Multi-${VERSION_DASH}/SRBMiner-MULTI"; \
+    mv "./SRBMiner-Multi-${VERSION_DASH}" "./srbminer_${VERSION_TAG}"; \
+  } \
   && download_srbminer "3.5.0" \
   && download_srbminer "3.5.4"
 
@@ -130,7 +146,8 @@ RUN download_fl4shminer() { \
   } \
   && download_fl4shminer "v1.2.0" \
   && download_fl4shminer "v1.2.3" \
-  && download_fl4shminer "v1.2.4"
+  && download_fl4shminer "v1.2.4" \
+  && download_fl4shminer "v1.3.0"
 
 # --------------------------------------------------------
 # 3. INSTALAÇÃO DO GMINER (RVN Network)

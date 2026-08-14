@@ -1,5 +1,16 @@
 #!/bin/bash
 
+SRBMINER_API_PORT=${API_PORT:-20080}
+
+__srbminer_bin() {
+	local VERSION_TAG="$1";
+	local VERSION_TYPE="${2:-default}";
+	if [ "$VERSION_TYPE" == "custom" ]; then
+		echo "./srbminer_${VERSION_TAG}_custom/srbminer_custom_bin";
+	else
+		echo "./srbminer_${VERSION_TAG}/SRBMiner-MULTI";
+	fi
+}
 
 docker_run_srbminer_PRL() {
     set -e;
@@ -12,35 +23,18 @@ docker_run_srbminer_PRL() {
 	  --gpus all \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
 	  pearl-multiminerador:latest \
-	  unbuffer ./srbminer_${VERSION_TAG}/srbminer_custom_bin \
+	  unbuffer $(__srbminer_bin "$VERSION_TAG" "custom") \
 	    --algorithm-gpu pearlhash \
 	    --pool br.pearl.herominers.com:1200 \
-	    --wallet prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4+mdl1pprpse62zvnexs6ra6tsuhu5qg2sp8k9qqsun8nlpfqw0uw6e3nkqk997vp \
-	    --worker multi-zd01 \
-	    --api-enable --api-port 80 \
+	    --wallet "${WALLET_PRL}+${WALLET_MDL}" \
+	    --worker "${WORKER_NAME}" \
+	    --api-enable --api-port "${SRBMINER_API_PORT}" \
 	    --log-file /miners/srbminer.log
 }
 
 docker_run_srbminer_RVN() {
     set -e;
     local VERSION_TAG="$1";
-
-	# docker run -d \
-	#   --name pearl-miner \
-	#   --restart unless-stopped \
-	#   --ipc=host \
-	#   --gpus all \
-	#   -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
-	#   pearl-multiminerador:latest \
-	#   unbuffer ./srbminer_${VERSION_TAG}/srbminer_custom_bin \
-	# 	--algorithm kawpow \
-	# 	--pool us-rvn.2miners.com:6060 \
-	# 	--wallet bc1qvkd7x227z0urkzzlky8hlgve5j5s4ha9swkaxt \
-	# 	--password x \
-	#     --worker multi-zd01 \
-	#     --api-enable --api-port 80 \
-	#     --log-file /miners/srbminer.log
-
 
 	docker run -d \
 	  --name pearl-miner \
@@ -57,19 +51,38 @@ docker_run_srbminer_RVN() {
       -e GPU_MAX_WORKGROUP_SIZE=1024 \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
 	  pearl-multiminerador:latest \
-	  unbuffer ./srbminer_${VERSION_TAG}/srbminer_custom_bin \
+	  unbuffer $(__srbminer_bin "$VERSION_TAG" "custom") \
         --disable-cpu \
 		--algorithm kawpow \
 		--pool br.ravencoin.herominers.com:1140 \
-		--wallet bc1qvkd7x227z0urkzzlky8hlgve5j5s4ha9swkaxt \
+		--wallet "${WALLET_BTC}" \
 		--password x \
-	    --worker multi-zd01 \
+	    --worker "${WORKER_NAME}" \
         --send-stales true \
-	    --api-enable --api-port 80 \
+	    --api-enable --api-port "${SRBMINER_API_PORT}" \
 	    --log-file /miners/srbminer.log
+}
 
-# SRBMiner-MULTI.exe --disable-cpu --algorithm kawpow --pool de.ravencoin.herominers.com:1140 --wallet YOUR_RAVEN_WALLET_ADDRESS.YOUR_WORKER_NAME --send-stales true
-# pause
+docker_run_srbminer_OGG() {
+    set -e;
+    local VERSION_TAG="$1";
+
+	docker run -d \
+	  --name pearl-miner \
+	  --restart unless-stopped \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  pearl-multiminerador:latest \
+	  unbuffer $(__srbminer_bin "$VERSION_TAG" "default") \
+	    --disable-cpu \
+	    --disable-gpu-opencl \
+	    --algorithm-gpu oggpow \
+	    --pool stratum+tcp://pool.oggcoin.org:8008 \
+	    --wallet "${WALLET_OGG}" \
+	    --worker "${WORKER_NAME}" \
+	    --api-enable --api-port "${SRBMINER_API_PORT}" \
+	    --log-file /miners/srbminer.log
 }
 
 docker_run_srbminer() {
@@ -81,8 +94,23 @@ docker_run_srbminer() {
         docker_run_srbminer_PRL "$VERSION_TAG";
     elif [ "$ALGO" == "RVN" ]; then
         docker_run_srbminer_RVN "$VERSION_TAG";
+	elif [ "$ALGO" == "OGG" ]; then
+		docker_run_srbminer_OGG "$VERSION_TAG";
     else
-        echo "Invalid algorithm specified. Use 'PRL' or 'RVN'."
+        echo "Invalid algorithm specified. Use 'PRL', 'RVN', or 'OGG'."
         exit 1;
     fi
+}
+
+docker_run_srbminer_list_devices() {
+	set -e;
+	local VERSION_TAG="$1";
+
+	docker run -it --rm \
+	  --ipc=host \
+	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+	  pearl-multiminerador:latest \
+	  unbuffer ./srbminer_${VERSION_TAG}_custom/srbminer_custom_bin \
+		--list-devices
 }

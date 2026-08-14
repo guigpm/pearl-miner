@@ -23,6 +23,8 @@
 #64 bytes from ns5035923.ip-148-113-49.net (148.113.49.128): icmp_seq=1 ttl=38 time=442 ms
 
 
+ALPHA_MINER_POOL_HOSTS="us1.alphapool.tech,us2.alphapool.tech,eu1.alphapool.tech,ru1.alphapool.tech,eu2.alphapool.tech,sg1.alphapool.tech,in1.alphapool.tech"
+
 docker_run_alpha_miner() {
     set -e;
     local VERSION_TAG="${1:-latest}";
@@ -33,18 +35,18 @@ docker_run_alpha_miner() {
 	  --ipc=host \
 	  --gpus all \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
-	  -e PEARL_ADDRESS=prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
-	  -e PEARL_POOL_HOST=us1.alphapool.tech,us2.alphapool.tech,eu1.alphapool.tech,ru1.alphapool.tech,eu2.alphapool.tech,sg1.alphapool.tech,in1.alphapool.tech \
+	  -e PEARL_ADDRESS="${WALLET_PRL}" \
+	  -e PEARL_POOL_HOST="${ALPHA_MINER_POOL_HOSTS}" \
 	  -e PEARL_POOL_PORT=5566 \
 	  -e PEARL_DIFFICULTY=524288 \
-	  -e PEARL_WORKER=mattioli-zd01 \
+	  -e PEARL_WORKER="${WORKER_NAME}" \
 	  pearl-multiminerador:latest \
 	  unbuffer ./alpha-miner-${VERSION_TAG} \
 	    --pool stratum+tcp://us1.alphapool.tech:5566 \
 	    --failover-pools stratum+tcp://us2.alphapool.tech:5566 \
-	    --address prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
-	    --worker multi-zd01 \
-	    --password "x;d=524288;mdl=mdl1pprpse62zvnexs6ra6tsuhu5qg2sp8k9qqsun8nlpfqw0uw6e3nkqk997vp"
+	    --address "${WALLET_PRL}" \
+	    --worker "${WORKER_NAME}" \
+	    --password "x;d=524288;mdl=${WALLET_MDL}"
 }
 
 docker_run_alpha_miner_latest_in() {
@@ -64,11 +66,11 @@ docker_run_alpha_miner_direct() {
 	  --ipc=host \
 	  --gpus all \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
-	  -e PEARL_ADDRESS=prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4 \
-	  -e PEARL_POOL_HOST=us1.alphapool.tech,us2.alphapool.tech,eu1.alphapool.tech,ru1.alphapool.tech,eu2.alphapool.tech,sg1.alphapool.tech,in1.alphapool.tech \
+	  -e PEARL_ADDRESS="${WALLET_PRL}" \
+	  -e PEARL_POOL_HOST="${ALPHA_MINER_POOL_HOSTS}" \
 	  -e PEARL_POOL_PORT=5566 \
 	  -e PEARL_DIFFICULTY=524288 \
-	  -e PEARL_WORKER=mattioli-zd01 \
+	  -e PEARL_WORKER="${WORKER_NAME}" \
 	  alphaminetech/pearl-miner:${VERSION_TAG}
 }
 

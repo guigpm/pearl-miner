@@ -14,7 +14,7 @@ docker_run_cryptix_miner() {
 	  pearl-multiminerador:latest \
 	  unbuffer ./cryptix_miner_${VERSION_TAG}/cryptix-miner \
 	    -s "stratum+tcp://stratum.cryptix-network.org:13094" \
-	    --mining-address="cryptix:qzfsfy9glm4prqlqxas7t7t3ypgat47zkgmedxwltr9xwyhpvp2kgdh8nslge" \
+	    --mining-address="${WALLET_CPAY}" \
 	    -t "14" \
 	    --opencl-disable
 

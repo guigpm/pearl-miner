@@ -15,7 +15,7 @@ docker_run_fl4shminer() {
 	  unbuffer ./fl4shminer_${VERSION_TAG}/fl4shminer \
 	    --algo cryptix-ox8 \
 	    --pool "stratum+tcp://stratum.cryptix-network.org:13094" \
-	    --wallet "cryptix:qzfsfy9glm4prqlqxas7t7t3ypgat47zkgmedxwltr9xwyhpvp2kgdh8nslge"
+	    --wallet "${WALLET_CPAY}"
 
 	    #cryptix:qzfsfy9glm4prqlqxas7t7t3ypgat47zkgmedxwltr9xwyhpvp2kgdh8nslge CPAY
 	    #cryptix:qqzfpzzzv66vjfyru6r9nfz9lxxkht72t4wdvu4tsfs96r89rumvqf6j3eaae SafeTrade
