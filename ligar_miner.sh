@@ -74,28 +74,28 @@ fi
 echo "=== 4. Iniciando o minerador ==="
 # Escolha o minerador desejado e a versão correspondente
 
-# docker_run_srbminer_list_devices "3.5.4"
+# docker_run_srbminer_list_devices "3.5.4" # -- TODO: Download local
 
 ## CPAY
-# docker_run_cryptix_miner "0.2.10"
-# docker_run_fl4shminer "v1.2.4"
-docker_run_fl4shminer "v1.3.0"
+# docker_run_cryptix_miner "0.2.10" # -- TODO: Download local
+# docker_run_fl4shminer "v1.2.4" # -- TODO: Download local
+docker_run_fl4shminer "v1.3.1"
 
 ## RVN
-# docker_run_srbminer "3.5.4" "RVN"
-#docker_run_gminer "3.44"
+# docker_run_srbminer "3.5.4" "RVN" # -- TODO: Download local
+# docker_run_gminer "3.44" # -- TODO: Download local
 
 ## PRL
-# docker_run_srbminer "3.5.4" "PRL"
-# docker_run_alpha_miner "1.7.7"
-# docker_run_alpha_miner "latest"
-# docker_run_alpha_miner_direct "1.7.7"
-# docker_run_alpha_miner_direct "latest"
+# docker_run_srbminer "3.5.7" "PRL"
+# docker_run_alpha_miner "1.7.7" # -- TODO: Download local
+# docker_run_alpha_miner "latest" # -- TODO: Download local
+# docker_run_alpha_miner_direct "1.7.7" # -- TODO: Download local
+# docker_run_alpha_miner_direct "latest" # -- TODO: Download local
 
 ## OGG
-# docker_run_gminer "3.44" "OGG"
-# docker_run_srbminer "3.4.9" "OGG"
-# docker_run_srbminer "3.5.4" "OGG"
+# docker_run_gminer "3.44" "OGG" # -- TODO: Download local
+# docker_run_srbminer "3.4.9" "OGG" # -- TODO: Download local
+# docker_run_srbminer "3.5.4" "OGG" # -- TODO: Download local
 
 echo "=== Concluído! O minerador está rodando em segundo plano. ==="
 

@@ -34,143 +34,79 @@ RUN apt-get -y update \
 # Diretório onde os mineradores ficarão centralizados
 WORKDIR /miners
 
+COPY --chown=miners:miners .docker/downloads /miners/downloads
+COPY --chown=miners:miners .docker/run /miners/run
 
-# --------------------------------------------------------
-# 1. INSTALAÇÃO DO SRBMINER-MULTI
-# --------------------------------------------------------
-#  https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/SRBMiner-Multi-${VERSION_DASH}-Linux.tar.gz
-#  https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/srbminer_custom-${VERSION_TAG}.tar.gz
-RUN download_srbminer_custom() { \
-    set -e; \
-    local VERSION_TAG="$1"; \
-    local VERSION_DASH="$(echo "${VERSION_TAG}" | sed 's/\./-/g')"; \
-    echo ">> Download SRBMiner-Multi ${VERSION_TAG} and extract files:"; \
-    wget -qO- "https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/srbminer_custom-${VERSION_TAG}.tar.gz" | tar -xzvf - -C /miners; \
-    chown -R miners:miners ./srbminer_custom; \
-    chmod +x ./srbminer_custom/srbminer_custom_bin; \
-    mv ./srbminer_custom "./srbminer_${VERSION_TAG}_custom"; \
-  } \
-  && download_srbminer_custom "3.3.3" \
-  && download_srbminer_custom "3.3.4" \
-  && download_srbminer_custom "3.3.5" \
-  && download_srbminer_custom "3.3.6" \
-  && download_srbminer_custom "3.3.7" \
-  && download_srbminer_custom "3.3.8" \
-  && download_srbminer_custom "3.3.9" \
-  && download_srbminer_custom "3.4.0" \
-  && download_srbminer_custom "3.4.1" \
-  && download_srbminer_custom "3.4.2" \
-  && download_srbminer_custom "3.4.7" \
-  && download_srbminer_custom "3.4.9" \
-  && download_srbminer_custom "3.5.0" \
-  && download_srbminer_custom "3.5.4"
+RUN chmod +x /miners/downloads/*.sh \
+  && chmod +x /miners/run/*.sh
 
-  RUN download_srbminer() { \
-    set -e; \
-    local VERSION_TAG="$1"; \
-    local VERSION_DASH="$(echo "${VERSION_TAG}" | sed 's/\./-/g')"; \
-    echo ">> Download SRBMiner-Multi ${VERSION_TAG} and extract files:"; \
-    wget -qO- "https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/SRBMiner-Multi-${VERSION_DASH}-Linux.tar.gz" | tar -xzvf - -C /miners; \
-    chown -R miners:miners "./SRBMiner-Multi-${VERSION_DASH}"; \
-    chmod +x "./SRBMiner-Multi-${VERSION_DASH}/SRBMiner-MULTI"; \
-    mv "./SRBMiner-Multi-${VERSION_DASH}" "./srbminer_${VERSION_TAG}"; \
-  } \
-  && download_srbminer "3.5.0" \
-  && download_srbminer "3.5.4"
 
-# --------------------------------------------------------
-# 2. INSTALAÇÃO DO ALPHA-MINER (Pearl Network)
-# --------------------------------------------------------
-# O alpha-miner disponibiliza o executável direto nas releases do GitHub
-RUN curl -L -o alpha-miner-1.7.7 https://github.com/AlphaMine-Tech/alpha-miner/releases/download/v1.7.7/alpha-miner-1.7.7 && \
-  echo "2cddd2956e11faf4e564d4a901adc13b51137e32bad181eb1c75c8b83eaf27ba  alpha-miner-1.7.7" | sha256sum -c && \
-  chown -R miners:miners ./alpha-miner-1.7.7 && \
-  chmod +x alpha-miner-1.7.7
+# # --------------------------------------------------------
+# # 1. INSTALAÇÃO DO SRBMINER-MULTI
+# # --------------------------------------------------------
+# #  https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/SRBMiner-Multi-${VERSION_DASH}-Linux.tar.gz
+# #  https://github.com/doktor83/SRBMiner-Multi/releases/download/${VERSION_TAG}/srbminer_custom-${VERSION_TAG}.tar.gz
+# RUN . /miners/downloads/srbminer.sh \
+#   && download_srbminer_custom "3.3.3" \
+#   && download_srbminer_custom "3.3.4" \
+#   && download_srbminer_custom "3.3.5" \
+#   && download_srbminer_custom "3.3.6" \
+#   && download_srbminer_custom "3.3.7" \
+#   && download_srbminer_custom "3.3.8" \
+#   && download_srbminer_custom "3.3.9" \
+#   && download_srbminer_custom "3.4.0" \
+#   && download_srbminer_custom "3.4.1" \
+#   && download_srbminer_custom "3.4.2" \
+#   && download_srbminer_custom "3.4.7" \
+#   && download_srbminer_custom "3.4.9" \
+#   && download_srbminer_custom "3.5.0" \
+#   && download_srbminer_custom "3.5.4"
 
-RUN curl -L -o alpha-miner-1.7.6-beta https://github.com/AlphaMine-Tech/alpha-miner/releases/download/v1.7.6-beta/alpha-miner && \
-  echo "c84396e2ff4ded14a8c83cd253761b46dd40927c5c43a39a20aac9ff8bdfbfe5  alpha-miner-1.7.6-beta" | sha256sum -c && \
-  chown -R miners:miners ./alpha-miner-1.7.6-beta && \
-  chmod +x alpha-miner-1.7.6-beta
+#   RUN . /miners/downloads/srbminer.sh \
+#   && download_srbminer "3.5.0" \
+#   && download_srbminer "3.5.4"
 
-RUN curl -L -o alpha-miner-1.8.2 https://github.com/AlphaMine-Tech/alpha-miner/releases/download/v1.8.2/alpha-miner-1.8.2 && \
-  echo "9daff37e9669263a6f474e5604ee91ba5391e4bb20e4594666ff310de0ccca6e  alpha-miner-1.8.2" | sha256sum -c && \
-  chown -R miners:miners ./alpha-miner-1.8.2 && \
-  chmod +x alpha-miner-1.8.2
+# # --------------------------------------------------------
+# # 2. INSTALAÇÃO DO ALPHA-MINER (Pearl Network)
+# # --------------------------------------------------------
 
-RUN curl -L -o alpha-miner-1.8.6 https://github.com/AlphaMine-Tech/alpha-miner/releases/download/v1.8.6/alpha-miner && \
-  echo "4d200e1d710f8095d5d5aa1e944689b1972dbc84a61190a07efeaa327339e126  alpha-miner-1.8.6" | sha256sum -c && \
-  chown -R miners:miners ./alpha-miner-1.8.6 && \
-  chmod +x alpha-miner-1.8.6
+# RUN . /miners/downloads/alpha-miner.sh \
+#   && download_alphaminer "1.7.7" \
+#   && download_alphaminer "1.7.6-beta" \
+#   && download_alphaminer "1.8.2" \
+#   && download_alphaminer "1.8.6" \
+#   && download_alphaminer "1.8.8"
 
-RUN curl -L -o alpha-miner-1.8.8 https://github.com/AlphaMine-Tech/alpha-miner/releases/download/v1.8.8/alpha-miner && \
-  echo "96502aaf7ca8a94121632364987cfc4cb03c007303acf803abda8957e5a80f36  alpha-miner-1.8.8" | sha256sum -c && \
-  chown -R miners:miners ./alpha-miner-1.8.8 && \
-  chmod +x alpha-miner-1.8.8
+# RUN curl -L -o alpha-miner-latest https://pearl.alphapool.tech/downloads/alpha-miner && \
+#   chown -R miners:miners ./alpha-miner-latest && \
+#   chmod +x alpha-miner-latest
 
-RUN curl -L -o alpha-miner-latest https://pearl.alphapool.tech/downloads/alpha-miner && \
-  chown -R miners:miners ./alpha-miner-latest && \
-  chmod +x alpha-miner-latest
+# # --------------------------------------------------------
+# # 3. INSTALAÇÃO DO CRYPTIX-MINER (Cryptix Network)
+# # --------------------------------------------------------
 
-# --------------------------------------------------------
-# 3. INSTALAÇÃO DO CRYPTIX-MINER (Cryptix Network)
-# --------------------------------------------------------
+# RUN . /miners/downloads/cryptix-miner.sh \
+#   && download_cryptix_miner "0.2.9" \
+#   && download_cryptix_miner "0.2.10" "ubuntu64"
 
-RUN download_cryptix_miner() { \
-    set -e; \
-    local VERSION_TAG="$1"; \
-    local VERSION_DASH="$(echo "${VERSION_TAG}" | sed 's/\./-/g')"; \
-    local OS_TYPE="${2:-linux64}"; \
-    local FOLDER_NAME="cryptix-miner-${OS_TYPE}-v-${VERSION_DASH}"; \
-    echo ">> Download cryptix-miner and extract files:"; \
-    curl -L -o /tmp/cryptix-miner.7z "https://github.com/cryptix-network/cryptix-miner/releases/download/v${VERSION_TAG}/${FOLDER_NAME}.7z"; \
-    7z x /tmp/cryptix-miner.7z -o"."; \
-    chown -R miners:miners "./${FOLDER_NAME}"; \
-    chmod +x "./${FOLDER_NAME}/cryptix-miner"; \
-    mv "./${FOLDER_NAME}" "./cryptix_miner_${VERSION_TAG}"; \
-  } \
-  && download_cryptix_miner "0.2.9" \
-  && download_cryptix_miner "0.2.10" "ubuntu64"
+# # --------------------------------------------------------
+# # 4. INSTALAÇÃO DO FL4SHMINER
+# # --------------------------------------------------------
 
-# --------------------------------------------------------
-# 3. INSTALAÇÃO DO FL4SHMINER (Cryptix Network)
-# --------------------------------------------------------
+# RUN . /miners/downloads/fl4shminer.sh \
+#   && download_fl4shminer "v1.2.0" \
+#   && download_fl4shminer "v1.2.3" \
+#   && download_fl4shminer "v1.2.4" \
+#   && download_fl4shminer "v1.3.0"
 
-RUN download_fl4shminer() { \
-    set -e; \
-    local VERSION_TAG="$1"; \
-    echo ">> Download Fl4shMiner ${VERSION_TAG} and extract files:"; \
-    wget -qO- "https://github.com/Fl4sh9174/Fl4shMiner/releases/download/${VERSION_TAG}/fl4shminer-${VERSION_TAG}.tar.gz" | tar -xzvf - -C /miners; \
-    chown -R miners:miners ./fl4shminer; \
-    chmod +x ./fl4shminer/fl4shminer; \
-    mv ./fl4shminer "./fl4shminer_${VERSION_TAG}"; \
-  } \
-  && download_fl4shminer "v1.2.0" \
-  && download_fl4shminer "v1.2.3" \
-  && download_fl4shminer "v1.2.4" \
-  && download_fl4shminer "v1.3.0"
+# # --------------------------------------------------------
+# # 5. INSTALAÇÃO DO GMINER
+# # --------------------------------------------------------
 
-# --------------------------------------------------------
-# 3. INSTALAÇÃO DO GMINER (RVN Network)
-# --------------------------------------------------------
-
- # https://github.com/develsoftware/GMinerRelease/releases/download/3.44/gminer_3_44_linux64.tar.xz
-RUN download_gminer() { \
-    set -e; \
-    local VERSION_TAG="$1"; \
-    local VERSION_DASH="$(echo "${VERSION_TAG}" | sed 's/\./_/g')"; \
-    local OS_TYPE="${2:-linux64}"; \
-    local FOLDER_NAME="gminer_${VERSION_DASH}_${OS_TYPE}"; \
-    local DOWNLOAD_URL="https://github.com/develsoftware/GMinerRelease/releases/download/${VERSION_TAG}/${FOLDER_NAME}.tar.xz"; \
-    echo ">> Download gminer and extract files from ${DOWNLOAD_URL}:"; \
-    curl -L -o /tmp/gminer.tar.xz ${DOWNLOAD_URL}; \
-    local gminer_local_folder="./gminer-${VERSION_TAG}"; \
-    mkdir ${gminer_local_folder}; \
-    tar -xvf /tmp/gminer.tar.xz -C ${gminer_local_folder}; \
-    chown -R miners:miners ${gminer_local_folder}; \
-    chmod +x "${gminer_local_folder}/miner"; \
-  } \
-  && download_gminer "3.43" \
-  && download_gminer "3.44"
+#  # https://github.com/develsoftware/GMinerRelease/releases/download/3.44/gminer_3_44_linux64.tar.xz
+# RUN . /miners/downloads/gminer.sh \
+#   && download_gminer "3.43" \
+#   && download_gminer "3.44"
 
 # --------------------------------------------------------
 # CONFIGURAÇÃO DE INICIALIZAÇÃO FLEXÍVEL

@@ -15,6 +15,10 @@ __srbminer_bin() {
 docker_run_srbminer_PRL() {
     set -e;
     local VERSION_TAG="$1";
+	local BIN_RUN=$(__srbminer_bin "$VERSION_TAG" "custom");
+
+	sudo nvidia-smi --lock-gpu-clocks=2610; # PRL
+	sudo nvidia-smi --lock-memory-clocks=5001; # PRL
 
 	docker run -d \
 	  --name pearl-miner \
@@ -22,19 +26,23 @@ docker_run_srbminer_PRL() {
 	  --ipc=host \
 	  --gpus all \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
-	  pearl-multiminerador:latest \
-	  unbuffer $(__srbminer_bin "$VERSION_TAG" "custom") \
-	    --algorithm-gpu pearlhash \
-	    --pool br.pearl.herominers.com:1200 \
-	    --wallet "${WALLET_PRL}+${WALLET_MDL}" \
-	    --worker "${WORKER_NAME}" \
-	    --api-enable --api-port "${SRBMINER_API_PORT}" \
-	    --log-file /miners/srbminer.log
+	  pearl-multiminerador:latest bash -c "\
+	    . /miners/downloads/srbminer.sh; \
+		download_srbminer_custom \"${VERSION_TAG}\"; \
+	    unbuffer ${BIN_RUN} \
+	      --algorithm-gpu pearlhash \
+	      --pool br.pearl.herominers.com:1200 \
+	      --wallet \"${WALLET_PRL}+${WALLET_MDL}\" \
+	      --worker \"${WORKER_NAME}\" \
+	      --api-enable --api-port \"${SRBMINER_API_PORT}\" \
+	      --log-file /miners/srbminer.log \
+	  ";
 }
 
 docker_run_srbminer_RVN() {
     set -e;
     local VERSION_TAG="$1";
+	local BIN_RUN=$(__srbminer_bin "$VERSION_TAG" "custom");
 
 	docker run -d \
 	  --name pearl-miner \
@@ -51,7 +59,7 @@ docker_run_srbminer_RVN() {
       -e GPU_MAX_WORKGROUP_SIZE=1024 \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
 	  pearl-multiminerador:latest \
-	  unbuffer $(__srbminer_bin "$VERSION_TAG" "custom") \
+	  unbuffer ${BIN_RUN} \
         --disable-cpu \
 		--algorithm kawpow \
 		--pool br.ravencoin.herominers.com:1140 \
@@ -66,6 +74,7 @@ docker_run_srbminer_RVN() {
 docker_run_srbminer_OGG() {
     set -e;
     local VERSION_TAG="$1";
+	local BIN_RUN=$(__srbminer_bin "$VERSION_TAG" "default");
 
 	docker run -d \
 	  --name pearl-miner \
@@ -74,7 +83,7 @@ docker_run_srbminer_OGG() {
 	  --gpus all \
 	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
 	  pearl-multiminerador:latest \
-	  unbuffer $(__srbminer_bin "$VERSION_TAG" "default") \
+	  unbuffer ${BIN_RUN} \
 	    --disable-cpu \
 	    --disable-gpu-opencl \
 	    --algorithm-gpu oggpow \
