@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e;
 
 docker_run_oggminer() {
     set -e;
@@ -9,6 +9,7 @@ docker_run_oggminer() {
 	# Consumo: 410 W
 
 	sudo nvidia-smi --lock-gpu-clocks=2250; # OGG
+	# sudo nvidia-smi --lock-gpu-clocks=2505; # OGG
 	sudo nvidia-smi --reset-memory-clocks; # OGG
 
 	docker run -d \

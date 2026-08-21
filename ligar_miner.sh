@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e;
 
 API_PORT="20080"
 
