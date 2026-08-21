@@ -9,7 +9,7 @@ WALLET_CPAY="cryptix:qzfsfy9glm4prqlqxas7t7t3ypgat47zkgmedxwltr9xwyhpvp2kgdh8nsl
 # WALLET_CPAY="cryptix:qqzfpzzzv66vjfyru6r9nfz9lxxkht72t4wdvu4tsfs96r89rumvqf6j3eaae" # SafeTrade
 WALLET_PRL="prl1pkeapkq4t0yudgyxqsmev5tzgrst2w4lspjrsfx2evuxv84zks6vsnfe5v4" # SafeTrade
 WALLET_MDL="mdl1pprpse62zvnexs6ra6tsuhu5qg2sp8k9qqsun8nlpfqw0uw6e3nkqk997vp" # Local
-WALLET_OGG="0xE4d27f9605F650C7d264A2c87972F9cA6F18f2b1" # ??
+WALLET_OGG="0xE4d27f9605F650C7d264A2c87972F9cA6F18f2b1" # Local
 # WALLET_OGG="0x2D45fe37C8427D47F843d21bD9ca70e6EaC84A88" # nonkyc
 
 
@@ -96,6 +96,7 @@ docker_run_fl4shminer "v1.3.1"
 # docker_run_gminer "3.44" "OGG" # -- TODO: Download local
 # docker_run_srbminer "3.4.9" "OGG" # -- TODO: Download local
 # docker_run_srbminer "3.5.4" "OGG" # -- TODO: Download local
+# docker_run_oggminer "1.0.0"
 
 echo "=== Concluído! O minerador está rodando em segundo plano. ==="
 
